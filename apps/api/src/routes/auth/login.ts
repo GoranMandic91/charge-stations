@@ -3,7 +3,6 @@ import { RequestHandler } from "express";
 import { check } from "../../utils/check";
 import { database } from "../../database";
 import { authorization } from "../../middleware/authorization";
-import { log } from "@repo/logger";
 
 const loginHandler: RequestHandler = async (req, res) => {
   const { email = undefined, password = undefined } = req.body;
