@@ -1,4 +1,4 @@
-import { hashSync, genSaltSync } from "bcrypt";
+import { compareSync } from "bcrypt";
 
-export const encrypt = (password: string) =>
-  hashSync(password, genSaltSync(10));
+export const check = (password: string, encrypted: string) =>
+  compareSync(password, encrypted);
