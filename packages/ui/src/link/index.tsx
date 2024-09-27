@@ -1,3 +1,4 @@
+import React from "react";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 
 interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {

@@ -1,6 +1,5 @@
 "use client";
-
-import { useState } from "react";
+import React, { useState } from "react";
 
 export function CounterButton(): JSX.Element {
   const [count, setCount] = useState(0);
