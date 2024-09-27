@@ -3,5 +3,7 @@
     {
       "mode": "auto"
     }
-  ]
+  ],
+  "prettier.singleQuote": false,
+  "prettier.jsxSingleQuote": false
 }
