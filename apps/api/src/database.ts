@@ -29,9 +29,17 @@ export const database = () => {
     await mongoClient.close();
   };
 
+  const createIndexes = async () => {
+    await mongoClient
+      .db()
+      .collection("users")
+      .createIndex({ email: 1 }, { unique: true });
+  };
+
   return {
     connect,
     close,
+    createIndexes,
     mongoClient: () => mongoClient,
   };
 };

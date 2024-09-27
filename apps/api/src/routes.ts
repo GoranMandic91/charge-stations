@@ -1,4 +1,5 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import { register } from "./routes/auth/register";
 
 export const routes = (): Router => {
   const router = Router();
@@ -9,6 +10,8 @@ export const routes = (): Router => {
   router.get("/status", (_, res) => {
     return res.json({ ok: true });
   });
+
+  router.post("/auth/register", register);
 
   return router;
 };

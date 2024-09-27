@@ -21,6 +21,7 @@ process.on("SIGINT", shutdown);
 (async () => {
   const dbUrl = await db.connect();
   log(`Successfully connected to db on ${dbUrl}`);
+  await db.createIndexes();
 
   server.listen(port, () => {
     log(`server running on http://localhost:${port}`);
