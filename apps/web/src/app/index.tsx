@@ -6,6 +6,7 @@ import { RequireAuth } from "../RequireAuth";
 import { Protected } from "../pages/Protected";
 import { useAppSelector } from "../hooks/useAppSelector";
 import Register from "../pages/Register";
+import MenuAppBar from "../components/MenuAppBar";
 
 export default function App(): JSX.Element {
   const { user } = useAppSelector((state) => ({ user: state.auth.user }));
@@ -21,7 +22,14 @@ export default function App(): JSX.Element {
 
   return (
     <Routes>
-      <Route element={<Outlet />}>
+      <Route
+        element={
+          <>
+            <MenuAppBar />
+            <Outlet />
+          </>
+        }
+      >
         <Route
           path="/protected"
           element={
