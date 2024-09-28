@@ -13,8 +13,22 @@ const loginHandler: RequestHandler = async (req, res) => {
 
   if (user && check(password, user.password)) {
     const payload = { email: user.email, userId: user._id };
-    const token = jwt.sign(payload, config.secret, { expiresIn: "12h" });
-    return res.status(200).json({ token, id: user._id });
+
+    const currentTime = new Date().getTime();
+    const oneDayInSeconds = 24 * 60 * 60;
+    const oneDayInMs = oneDayInSeconds * 1000;
+    const expires = new Date(currentTime + oneDayInMs);
+    const token = jwt.sign(payload, config.secret, {
+      expiresIn: oneDayInSeconds,
+    });
+
+    return res
+      .cookie("Authorization", token, {
+        expires: expires,
+        httpOnly: true,
+        secure: true,
+      })
+      .json({ id: user._id });
   }
 
   return res.status(401).json({ message: "Unauthorized" });
