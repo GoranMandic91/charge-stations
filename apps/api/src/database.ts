@@ -1,14 +1,21 @@
 import { log } from "@repo/logger";
 import { MongoClient } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
+import { getConfig } from "./config";
 
 let mongoClient: MongoClient;
 
 export const database = () => {
   const connect = async (): Promise<string> => {
-    const options = { instance: { port: 27017 } };
-    const mongod = await MongoMemoryServer.create(options);
-    const dbUrl = mongod.getUri();
+    const config = getConfig();
+    let dbUrl;
+    if (!config.dbUrl) {
+      const options = { instance: { port: 27017 } };
+      const mongod = await MongoMemoryServer.create(options);
+      dbUrl = mongod.getUri();
+    } else {
+      dbUrl = config.dbUrl;
+    }
 
     mongoClient = new MongoClient(dbUrl, {
       socketTimeoutMS: 5000,

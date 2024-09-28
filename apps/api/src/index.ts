@@ -1,8 +1,9 @@
 import { log } from "@repo/logger";
 import { createServer } from "./server";
 import { database } from "./database";
-import { MongoMemoryServer } from "mongodb-memory-server";
 import { getConfig } from "./config";
+
+require("dotenv").config();
 
 const server = createServer();
 const db = database();
@@ -17,7 +18,6 @@ const shutdown = async () => {
 };
 
 process.on("SIGINT", shutdown);
-
 (async () => {
   const config = getConfig();
   const dbUrl = await db.connect();
