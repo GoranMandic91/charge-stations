@@ -1,23 +1,21 @@
-import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
-import { useAppSelector } from "../hooks/useAppSelector";
-import { getAllOffices } from "../store/offices";
-import { useAppDispatch } from "../hooks/useAppDispatch";
-import CustomSpeedDial from "../components/SpeedDial";
-import CreateDialog from "../components/CreateDialog";
-import OfficeItem from "../components/OfficeItem";
+import React, { useEffect } from "react";
 import { CircularProgress } from "@mui/material";
+
+import { getAllOffices } from "../store/offices";
+import OfficeItem from "../components/OfficeItem";
+import CreateDialog from "../components/CreateDialog";
+import CustomSpeedDial from "../components/SpeedDial";
+import { useAppSelector } from "../hooks/useAppSelector";
+import { useAppDispatch } from "../hooks/useAppDispatch";
 
 export default function Offices() {
   const dispatch = useAppDispatch();
-  const { user, offices, isLoading, isCreateDialogOpen } = useAppSelector(
-    (state) => ({
-      user: state.auth.user,
-      offices: state.offices.list,
-      isLoading: state.offices.isLoading,
-      isCreateDialogOpen: state.offices.isCreateDialogOpen,
-    })
-  );
+  const { user, offices, isLoading } = useAppSelector((state) => ({
+    user: state.auth.user,
+    offices: state.offices.list,
+    isLoading: state.offices.isLoading,
+  }));
 
   useEffect(() => {
     dispatch(getAllOffices() as any);
@@ -33,7 +31,7 @@ export default function Offices() {
     >
       {!isLoading &&
         offices.map((office: any, index: any) => (
-          <OfficeItem office={office} key={index} />
+          <OfficeItem {...office} key={index} />
         ))}
       {user.role === "admin" && <CustomSpeedDial />}
       {user.role === "admin" && <CreateDialog />}

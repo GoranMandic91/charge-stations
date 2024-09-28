@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { getSingleOffice } from "../store/offices";
 import ChargerItem from "../components/ChargerItem";
@@ -7,11 +8,9 @@ import CreateDialog from "../components/CreateDialog";
 import CustomSpeedDial from "../components/SpeedDial";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useAppSelector } from "../hooks/useAppSelector";
-import { useNavigate, useParams } from "react-router-dom";
 
 export default function Office() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, office, isLoading } = useAppSelector((state) => ({
     user: state.auth.user,
