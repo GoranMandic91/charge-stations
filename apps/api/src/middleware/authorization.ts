@@ -2,9 +2,11 @@ import { RequestHandler, Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { log } from "@repo/logger";
 import { getConfig } from "../config";
+import { findOne } from "../collections/users/findOne";
 
 interface HandlerOptions {
   skipJwtAuth?: boolean;
+  checkRole?: string;
 }
 
 const config = getConfig();
@@ -18,7 +20,17 @@ export const authorization =
       if (token) {
         try {
           const t = token.replace("Bearer ", "").replace("Bearer", "");
-          jwt.verify(t, config.secret);
+          const decoded = jwt.verify(t, config.secret);
+          if (options?.checkRole) {
+            const email = (decoded as any).email;
+            if (email) {
+              const user = await findOne({ email });
+              if (user && user.role === options.checkRole) {
+                return handler(req, res, next);
+              }
+              return res.status(401).json({ message: "Unauthorized" });
+            }
+          }
         } catch (error) {
           return res.status(401).json({ message: "Unauthorized" });
         }
@@ -26,6 +38,5 @@ export const authorization =
         return res.status(401).json({ message: "Auth token is not provided" });
       }
     }
-
     return handler(req, res, next);
   };

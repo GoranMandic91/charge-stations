@@ -2,7 +2,6 @@ import Joi from "joi";
 import { RequestHandler } from "express";
 import { authorization } from "../../middleware/authorization";
 import { validate } from "../../utils/validate";
-import { findOne } from "../../collections/users/findOne";
 import { insertOne } from "../../collections/users/insertOne";
 
 export const addUserSchema = Joi.object().keys({

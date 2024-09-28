@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { login } from "./routes/auth/login";
 import { register } from "./routes/auth/register";
+import { getAllOffices } from "./routes/offices/getAllOffices";
+import { getOfficeById } from "./routes/offices/getOfficeById";
+import { postOffice } from "./routes/offices/postOffice";
 
 export const routes = (): Router => {
   const router = Router();
@@ -9,6 +12,10 @@ export const routes = (): Router => {
 
   router.post("/auth/login", login);
   router.post("/auth/register", register);
+
+  router.get("/offices", getAllOffices);
+  router.get("/offices/:id", getOfficeById);
+  router.post("/offices", postOffice);
 
   return router;
 };

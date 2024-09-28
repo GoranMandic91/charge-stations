@@ -9,3 +9,22 @@ export interface UserDocument {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface Charger {
+  id: number;
+  available: boolean;
+  sessionStart: Date | null;
+  sessionEnd: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface OfficeDocument {
+  _id: ObjectId;
+  name: string;
+  location: string;
+  chargers: Charger[];
+  highDemandDuration: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
