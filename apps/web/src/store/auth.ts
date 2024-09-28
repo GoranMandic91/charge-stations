@@ -39,6 +39,9 @@ const authSlice = createSlice({
     setUser: (state, action: PayloadAction<any>) => {
       state.user = action.payload;
     },
+    removeUser: (state) => {
+      state.user = undefined;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
@@ -66,5 +69,5 @@ const authSlice = createSlice({
 
 const { reducer, actions } = authSlice;
 
-export const { setUser } = actions;
+export const { setUser, removeUser } = actions;
 export default reducer;

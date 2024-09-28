@@ -2,6 +2,7 @@ import { configureStore, EnhancedStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import auth from "./auth";
+import offices from "./offices";
 
 const persistConfig = {
   key: "root",
@@ -12,6 +13,7 @@ const persistedReducer = persistReducer(persistConfig, auth);
 const store: EnhancedStore = configureStore({
   reducer: {
     auth: persistedReducer,
+    offices: offices,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

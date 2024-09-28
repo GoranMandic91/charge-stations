@@ -7,6 +7,7 @@ import { Protected } from "../pages/Protected";
 import { useAppSelector } from "../hooks/useAppSelector";
 import Register from "../pages/Register";
 import MenuAppBar from "../components/MenuAppBar";
+import Offices from "../pages/Offices";
 
 export default function App(): JSX.Element {
   const { user } = useAppSelector((state) => ({ user: state.auth.user }));
@@ -31,15 +32,15 @@ export default function App(): JSX.Element {
         }
       >
         <Route
-          path="/protected"
+          path="/offices"
           element={
             <RequireAuth>
-              <Protected />
+              <Offices />
             </RequireAuth>
           }
         />
       </Route>
-      <Route path="*" element={<Navigate to="/protected" replace={true} />} />
+      <Route path="*" element={<Navigate to="/offices" replace={true} />} />
     </Routes>
   );
 }
