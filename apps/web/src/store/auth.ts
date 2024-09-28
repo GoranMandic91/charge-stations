@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import { postLogin } from "../api/auth";
+import { postLogin, postRegister } from "../api/auth";
 
 interface AuthState {
   user: any;
@@ -18,6 +18,23 @@ export const login = createAsyncThunk<
 >("auth/login", async ({ email, password }, thunkAPI) => {
   return await postLogin(email, password);
 });
+
+export const register = createAsyncThunk<
+  null,
+  {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    role: string;
+  },
+  { state: RootState }
+>(
+  "auth/register",
+  async ({ email, password, firstName, lastName, role }, thunkAPI) => {
+    return await postRegister(email, password, firstName, lastName, role);
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -38,6 +55,15 @@ const authSlice = createSlice({
     builder.addCase(login.fulfilled, (state, action) => {
       state.isLoading = false;
       state.user = action.payload;
+    });
+    builder.addCase(register.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(register.rejected, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(register.fulfilled, (state, action) => {
+      state.isLoading = false;
     });
   },
 });

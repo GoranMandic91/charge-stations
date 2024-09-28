@@ -1,7 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
@@ -34,10 +33,11 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
-  padding: 20,
-  marginTop: "10vh",
+  padding: 4,
+  marginTop: "30vh",
   "&::before": {
     content: '""',
+    margin: "auto",
     display: "block",
     position: "absolute",
     zIndex: -1,
@@ -52,7 +52,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function Login(props: { disableCustomTheme?: boolean }) {
+export default function Login() {
   const dispatch = useAppDispatch();
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
@@ -99,7 +99,6 @@ export default function Login(props: { disableCustomTheme?: boolean }) {
 
   return (
     <>
-      <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
           <Typography
@@ -166,7 +165,7 @@ export default function Login(props: { disableCustomTheme?: boolean }) {
               Don&apos;t have an account?{" "}
               <span>
                 <Link
-                  href="/material-ui/getting-started/templates/sign-in/"
+                  href="/register"
                   variant="body2"
                   sx={{ alignSelf: "center" }}
                 >

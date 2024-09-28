@@ -9,3 +9,18 @@ export const postLogin = (email: string, password: string): Promise<null> =>
     },
     body: JSON.stringify({ email, password }),
   });
+
+export const postRegister = (
+  email: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  role: string
+): Promise<null> =>
+  fetchJson(`${API_URL}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password, firstName, lastName, role }),
+  });
