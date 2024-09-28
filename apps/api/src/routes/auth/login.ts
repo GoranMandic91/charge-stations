@@ -24,13 +24,15 @@ const loginHandler: RequestHandler = async (req, res) => {
 
     const { _id, email, fullName, role, createdAt, updatedAt } = user;
 
-    return res
-      .cookie("Authorization", token, {
-        expires: expires,
-        httpOnly: true,
-        secure: true,
-      })
-      .json({ _id, email, fullName, role, createdAt, updatedAt });
+    return res.json({
+      _id,
+      email,
+      fullName,
+      role,
+      token,
+      createdAt,
+      updatedAt,
+    });
   }
 
   return res.status(401).json({ message: "Unauthorized" });
