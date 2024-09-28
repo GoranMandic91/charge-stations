@@ -1,15 +1,35 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import { postLogin, postRegister } from "../api/auth";
-import { getOffices, postOffice } from "../api/offices";
+import { getOfficeByID, getOffices, postOffice } from "../api/offices";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export interface Charger {
+  id: number;
+  available: boolean;
+  sessionStart: Date | null;
+  sessionEnd: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Office {
+  _id: string;
+  name: string;
+  location: string;
+  chargers: Charger[];
+  highDemandDuration: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 interface OfficesState {
-  list: any[];
+  list: Office[];
+  office?: Office;
   isLoading: boolean;
   isCreateDialogOpen: boolean;
 }
 const initialState: OfficesState = {
   list: [],
+  office: undefined,
   isLoading: false,
   isCreateDialogOpen: false,
 };
@@ -20,6 +40,14 @@ export const getAllOffices = createAsyncThunk<any, void, { state: RootState }>(
     return await getOffices(thunkAPI.getState().auth.user.token);
   }
 );
+
+export const getSingleOffice = createAsyncThunk<
+  any,
+  { id: string },
+  { state: RootState }
+>("offices/getSingleOffice", async ({ id }, thunkAPI) => {
+  return await getOfficeByID(thunkAPI.getState().auth.user.token, id);
+});
 
 export const createNewOffice = createAsyncThunk<any, any, { state: RootState }>(
   "offices/postOffice",
@@ -57,6 +85,17 @@ const officesSlice = createSlice({
     });
     builder.addCase(createNewOffice.fulfilled, (state, action) => {
       state.isLoading = false;
+    });
+    builder.addCase(getSingleOffice.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getSingleOffice.rejected, (state) => {
+      state.isLoading = false;
+      state.list = [];
+    });
+    builder.addCase(getSingleOffice.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.office = action.payload.office[0];
     });
   },
 });

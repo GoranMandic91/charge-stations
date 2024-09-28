@@ -1,13 +1,13 @@
 import * as React from "react";
+import MenuAppBar from "../components/MenuAppBar";
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 
 import Login from "../pages/Login";
-import { RequireAuth } from "../RequireAuth";
-import { Protected } from "../pages/Protected";
-import { useAppSelector } from "../hooks/useAppSelector";
-import Register from "../pages/Register";
-import MenuAppBar from "../components/MenuAppBar";
+import Office from "../pages/Office";
 import Offices from "../pages/Offices";
+import Register from "../pages/Register";
+import { RequireAuth } from "../RequireAuth";
+import { useAppSelector } from "../hooks/useAppSelector";
 
 export default function App(): JSX.Element {
   const { user } = useAppSelector((state) => ({ user: state.auth.user }));
@@ -36,6 +36,14 @@ export default function App(): JSX.Element {
           element={
             <RequireAuth>
               <Offices />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/offices/:id"
+          element={
+            <RequireAuth>
+              <Office />
             </RequireAuth>
           }
         />

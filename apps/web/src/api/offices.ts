@@ -1,8 +1,15 @@
 import { API_URL } from "../config";
 import { fetchJson } from "./fetch";
+import { Office } from "../store/offices";
 
-export const getOffices = (token: string): Promise<any[]> =>
+export const getOffices = (token: string): Promise<Office[]> =>
   fetchJson(`${API_URL}/offices`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json", Authorization: token },
+  });
+
+export const getOfficeByID = (token: string, id: string): Promise<Office[]> =>
+  fetchJson(`${API_URL}/offices/${id}`, {
     method: "GET",
     headers: { "Content-Type": "application/json", Authorization: token },
   });
