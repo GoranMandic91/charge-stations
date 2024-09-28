@@ -83,7 +83,7 @@ export default function CreateDialog() {
     const name = data.get("name")?.toString();
     const numOfChargers = data.get("chargers")?.toString();
     const highDemandDuration = data.get("duration")?.toString();
-    console.log({ location, name, numOfChargers, highDemandDuration });
+
     dispatch(
       createNewOffice({
         location,

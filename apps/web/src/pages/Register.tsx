@@ -99,7 +99,6 @@ export default function Register() {
     const fullName = data.get("name")?.toString();
     const password = data.get("password")?.toString();
 
-    console.log({ email, password, fullName });
     if (email && password && fullName) {
       await dispatch(
         register({

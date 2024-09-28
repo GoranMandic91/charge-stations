@@ -64,7 +64,7 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
     const email = data.get("email")?.toString();
     const password = data.get("password")?.toString();
-    console.log({ email, password });
+
     if (email && password) {
       dispatch(login({ email, password }) as any);
     }
