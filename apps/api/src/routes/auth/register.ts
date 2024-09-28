@@ -1,9 +1,9 @@
 import Joi from "joi";
-import { RequestHandler, Response, Send } from "express";
+import { RequestHandler } from "express";
 import { authorization } from "../../middleware/authorization";
 import { validate } from "../../utils/validate";
-import { database } from "../../database";
-import { encrypt } from "../../utils/encrypt";
+import { findOne } from "../../collections/users/findOne";
+import { insertOne } from "../../collections/users/insertOne";
 
 export const addUserSchema = Joi.object().keys({
   email: Joi.string().required(),
@@ -14,8 +14,6 @@ export const addUserSchema = Joi.object().keys({
 });
 
 export const registerHandler: RequestHandler = async (req, res) => {
-  const { mongoClient } = database();
-
   const { value, error } = validate(addUserSchema, req.body);
   if (error) {
     return res
@@ -24,26 +22,10 @@ export const registerHandler: RequestHandler = async (req, res) => {
   }
 
   try {
-    const { email, password, firstName, lastName, role } = value;
-    const inserted = await mongoClient()
-      .db()
-      .collection("users")
-      .insertOne({
-        email,
-        password: encrypt(password),
-        firstName,
-        lastName,
-        role,
-      });
-
-    const user = await mongoClient()
-      .db()
-      .collection("users")
-      .findOne({ _id: inserted.insertedId });
-
+    const user = await insertOne(value);
     return res.status(201).json({ user });
   } catch (error: any) {
-    if (error.message.includes("E11000 duplicate key error")) {
+    if (error.message === "duplicate-user") {
       return res.status(409).json({ message: "User already exists" });
     }
     return res.status(500).json({ message: "Server Error" });

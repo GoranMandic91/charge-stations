@@ -1,17 +1,15 @@
 import jwt from "jsonwebtoken";
 import { RequestHandler } from "express";
-import { check } from "../../utils/check";
-import { database } from "../../database";
-import { authorization } from "../../middleware/authorization";
 import { getConfig } from "../../config";
+import { check } from "../../utils/check";
+import { findOne } from "../../collections/users/findOne";
+import { authorization } from "../../middleware/authorization";
 
 const config = getConfig();
 
 const loginHandler: RequestHandler = async (req, res) => {
   const { email = undefined, password = undefined } = req.body;
-
-  const { mongoClient } = database();
-  const user = await mongoClient().db().collection("users").findOne({ email });
+  const user = await findOne({ email });
 
   if (user && check(password, user.password)) {
     const payload = { email: user.email, userId: user._id };
