@@ -5,18 +5,17 @@ import { BrowserRouter } from "react-router-dom";
 
 import "./index.css";
 import App from "./app";
-import store from "./store";
+import store, { persistor } from "./store";
+import { PersistGate } from "redux-persist/integration/react";
 
-const el = document.getElementById("root");
-if (el) {
-  const root = createRoot(el);
-  root.render(
-    <Provider store={store}>
+const container = document.getElementById("root");
+const root = createRoot(container!);
+root.render(
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </Provider>
-  );
-} else {
-  throw new Error("Could not find root element");
-}
+    </PersistGate>
+  </Provider>
+);
