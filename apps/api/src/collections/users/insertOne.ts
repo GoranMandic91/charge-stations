@@ -7,7 +7,7 @@ export const insertOne = async (data: any): Promise<UserDocument | null> => {
 
   try {
     const currentDate = new Date();
-    const { email, password, firstName, lastName, role } = data;
+    const { email, password, fullName, role } = data;
 
     const inserted = await mongoClient()
       .db()
@@ -15,8 +15,7 @@ export const insertOne = async (data: any): Promise<UserDocument | null> => {
       .insertOne({
         email,
         password: encrypt(password),
-        firstName,
-        lastName,
+        fullName,
         role,
         createdAt: currentDate,
         updatedAt: currentDate,

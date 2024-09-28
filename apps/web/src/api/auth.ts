@@ -13,8 +13,7 @@ export const postLogin = (email: string, password: string): Promise<null> =>
 export const postRegister = (
   email: string,
   password: string,
-  firstName: string,
-  lastName: string,
+  fullName: string,
   role: string
 ): Promise<null> =>
   fetchJson(`${API_URL}/auth/register`, {
@@ -22,5 +21,5 @@ export const postRegister = (
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password, firstName, lastName, role }),
+    body: JSON.stringify({ email, password, fullName, role }),
   });

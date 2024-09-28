@@ -24,17 +24,13 @@ export const register = createAsyncThunk<
   {
     email: string;
     password: string;
-    firstName: string;
-    lastName: string;
+    fullName: string;
     role: string;
   },
   { state: RootState }
->(
-  "auth/register",
-  async ({ email, password, firstName, lastName, role }, thunkAPI) => {
-    return await postRegister(email, password, firstName, lastName, role);
-  }
-);
+>("auth/register", async ({ email, password, fullName, role }, thunkAPI) => {
+  return await postRegister(email, password, fullName, role);
+});
 
 const authSlice = createSlice({
   name: "auth",

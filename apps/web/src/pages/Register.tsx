@@ -11,6 +11,7 @@ import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import { register } from "../store/auth";
 import { useAppDispatch } from "../hooks/useAppDispatch";
+import { useNavigate } from "react-router-dom";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -45,6 +46,7 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function Register() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
@@ -90,25 +92,24 @@ export default function Register() {
     return isValid;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email")?.toString();
-    const firstName = data.get("name")?.toString();
-    const lastName = data.get("name")?.toString();
+    const fullName = data.get("name")?.toString();
     const password = data.get("password")?.toString();
 
-    console.log({ email, password, firstName, lastName });
-    if (email && password && firstName && lastName) {
-      dispatch(
+    console.log({ email, password, fullName });
+    if (email && password && fullName) {
+      await dispatch(
         register({
           email,
           password,
-          firstName,
-          lastName,
+          fullName,
           role: "regular",
         }) as any
       );
+      navigate("/login");
     }
   };
 

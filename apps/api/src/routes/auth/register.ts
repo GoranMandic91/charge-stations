@@ -8,8 +8,7 @@ import { insertOne } from "../../collections/users/insertOne";
 export const addUserSchema = Joi.object().keys({
   email: Joi.string().required(),
   password: Joi.string().required(),
-  firstName: Joi.string().required(),
-  lastName: Joi.string().required(),
+  fullName: Joi.string().required(),
   role: Joi.string().valid("regular", "admin").required(),
 });
 
