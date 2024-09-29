@@ -1,5 +1,5 @@
 import { RootState } from ".";
-import { postCharger } from "../api/chargers";
+import { patchCharger, postCharger } from "../api/chargers";
 import {
   getOfficeByID,
   getOffices,
@@ -106,6 +106,19 @@ export const reserveChargingLot = createAsyncThunk<
     name: thunkAPI.getState().auth.user.fullName,
   };
   await postCharger({ ...data, user }, thunkAPI.getState().auth.user.token);
+  thunkAPI.dispatch(getSingleOffice({ id: data.officeId }));
+});
+
+export const releaseChargingLot = createAsyncThunk<
+  any,
+  any,
+  { state: RootState }
+>("offices/chargers/release", async (data, thunkAPI) => {
+  const user = {
+    id: thunkAPI.getState().auth.user._id,
+    name: thunkAPI.getState().auth.user.fullName,
+  };
+  await patchCharger({ ...data, user }, thunkAPI.getState().auth.user.token);
   thunkAPI.dispatch(getSingleOffice({ id: data.officeId }));
 });
 

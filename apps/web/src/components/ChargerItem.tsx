@@ -7,23 +7,25 @@ import {
   Chip,
   Tooltip,
   IconButton,
-  Stack,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import PersonIcon from "@mui/icons-material/Person";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import EvStationIcon from "@mui/icons-material/EvStation";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-
-import { Charger, reserveChargingLot } from "../store/offices";
+import {
+  Charger,
+  releaseChargingLot,
+  reserveChargingLot,
+} from "../store/offices";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 
-export default function ChargerItem(charger: Charger & { officeId: string }) {
+export default function ChargerItem({ charger, officeId, user }: any) {
   const dispatch = useAppDispatch();
-  const { id, available, sessionStart, sessionEnd, officeId, reservedBy } =
-    charger;
+  const { id, available, sessionStart, sessionEnd, reservedBy } = charger;
 
   const handleReserveClick = () => {
     if (available) {
@@ -31,18 +33,35 @@ export default function ChargerItem(charger: Charger & { officeId: string }) {
     }
   };
 
+  const handleReleaseClick = () => {
+    if (!available) {
+      dispatch(releaseChargingLot({ chargerId: id, officeId }) as any);
+    }
+  };
+
+  const showRelease =
+    !available && (reservedBy.id === user._id || user.role === "admin");
+
   return (
     <Card sx={{ minWidth: 350, margin: "16px", backgroundColor: "#f5f5f5" }}>
       <CardHeader
         title={`Charging Lot #${id}`}
         sx={{ backgroundColor: available ? "#e0f7fa" : "#ffebee" }}
         action={
-          available && (
+          available ? (
             <Tooltip title="Reserve this charging lot">
               <IconButton color="success" onClick={handleReserveClick}>
                 <EvStationIcon />
               </IconButton>
             </Tooltip>
+          ) : (
+            showRelease && (
+              <Tooltip title="Release this charging lot">
+                <IconButton color="error" onClick={handleReleaseClick}>
+                  <ExitToAppIcon />
+                </IconButton>
+              </Tooltip>
+            )
           )
         }
       />

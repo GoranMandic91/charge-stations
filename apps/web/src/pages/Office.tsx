@@ -64,7 +64,12 @@ export default function Office() {
         {!isLoading &&
           office &&
           office.chargers.map((charger: any, index: any) => (
-            <ChargerItem {...charger} officeId={office._id} key={index} />
+            <ChargerItem
+              charger={charger}
+              officeId={office._id}
+              user={user}
+              key={index}
+            />
           ))}
       </Box>
       {isLoading && (
