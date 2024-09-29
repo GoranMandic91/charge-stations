@@ -1,5 +1,5 @@
 import { database } from "../../database";
-import { Charger, OfficeDocument } from "../../types";
+import { Charger, ChargerRequest, OfficeDocument } from "../../types";
 
 export const insertOne = async (data: any): Promise<OfficeDocument | null> => {
   const { mongoClient } = database();
@@ -28,6 +28,7 @@ export const insertOne = async (data: any): Promise<OfficeDocument | null> => {
       location,
       chargers,
       highDemandDuration,
+      queue: [] as ChargerRequest[],
       createdAt: currentDate,
       updatedAt: currentDate,
     } as OfficeDocument);

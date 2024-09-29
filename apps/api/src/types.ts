@@ -25,12 +25,19 @@ export interface Charger {
   updatedAt: Date;
 }
 
+export interface ChargerRequest {
+  user: ChargingUser;
+  officeId: string;
+  chargerId: number;
+}
+
 export interface OfficeDocument {
   _id: ObjectId;
   name: string;
   location: string;
   chargers: Charger[];
   highDemandDuration: number;
+  queue: ChargerRequest[];
   createdAt: Date;
   updatedAt: Date;
 }

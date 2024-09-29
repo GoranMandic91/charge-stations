@@ -13,7 +13,7 @@ export const bookChargerSchema = Joi.object().keys({
     })
     .required(),
   officeId: Joi.string().required(),
-  chargerId: Joi.number().min(1).required(),
+  chargerId: Joi.number().min(1),
 });
 
 const postChargerHandler: RequestHandler = async (req, res) => {
