@@ -33,7 +33,6 @@ export default function OfficeItem(office: Office) {
           label={`Max Charge Time: ${highDemandDuration} hour(s)`}
           color="warning"
           icon={<FlashOnIcon />}
-          sx={{ marginTop: 2 }}
         />
         <Typography
           variant="body2"
@@ -42,12 +41,15 @@ export default function OfficeItem(office: Office) {
         >
           Chargers: {chargers.length}
         </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Available: {chargers.filter((c) => c.available).length}
+        </Typography>
         <Button
           variant="text"
           color="primary"
           component={RouterLink}
           to={`/offices/${_id}`}
-          sx={{ marginTop: 3 }}
+          sx={{ marginTop: 2 }}
           fullWidth
         >
           More Details

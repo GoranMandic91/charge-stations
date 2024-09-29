@@ -12,12 +12,16 @@ import { matchPath, useLocation, useNavigate } from "react-router-dom";
 
 import { removeUser } from "../store/auth";
 import { useAppDispatch } from "../hooks/useAppDispatch";
+import { useAppSelector } from "../hooks/useAppSelector";
 
 export default function MenuAppBar() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { office } = useAppSelector((state) => ({
+    office: state.offices.office,
+  }));
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -53,7 +57,9 @@ export default function MenuAppBar() {
             </IconButton>
           )}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Charge Stations
+            {isOfficeDetailPage
+              ? `${office?.name}, ${office?.location}`
+              : "Charge Stations"}
           </Typography>
           {
             <div>
