@@ -3,7 +3,6 @@ import { RequestHandler } from "express";
 
 import { validate } from "../../utils/validate";
 import { authorization } from "../../middleware/authorization";
-import { insertOne } from "../../collections/offices/insertOne";
 import { updateOne } from "../../collections/offices/updateOne";
 
 export const bookChargerSchema = Joi.object().keys({
@@ -22,7 +21,7 @@ const postChargerHandler: RequestHandler = async (req, res) => {
 
   try {
     await updateOne(value);
-    return res.status(201);
+    return res.status(201).json({});
   } catch (error: any) {
     return res.status(500).json({ message: error.message });
   }

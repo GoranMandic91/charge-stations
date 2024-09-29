@@ -44,6 +44,11 @@ export const updateOne = async (data: {
     .collection<OfficeDocument>("offices")
     .updateOne(
       { _id: new ObjectId(officeId) },
-      { $set: { [`charger.${chargerId - 1}`]: newChargerData } }
+      {
+        $set: {
+          updatedAt: currentDate,
+          [`chargers.${chargerId - 1}`]: newChargerData,
+        },
+      }
     );
 };
