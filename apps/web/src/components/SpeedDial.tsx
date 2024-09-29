@@ -1,27 +1,24 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
+
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
-import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
-import { useAppDispatch } from "../hooks/useAppDispatch";
-import { setIsCreateDialogOpen } from "../store/offices";
 
-export default function CustomSpeedDial() {
-  const dispatch = useAppDispatch();
+export interface ActionItem {
+  name: string;
+  icon: React.ReactElement;
+  clickHandler: () => void;
+}
 
-  const actions = [
-    {
-      icon: <FileCopyIcon />,
-      name: "Create New Office",
-      clickHandler: () => dispatch(setIsCreateDialogOpen(true)),
-    },
-  ];
-
+export default function CustomSpeedDial({
+  actions,
+}: {
+  actions: ActionItem[];
+}) {
   return (
     <SpeedDial
-      ariaLabel="SpeedDial basic example"
-      sx={{ position: "absolute", bottom: 24, right: 24 }}
+      ariaLabel="SpeedDial"
+      sx={{ position: "fixed", bottom: 24, right: 24 }}
       icon={<SpeedDialIcon />}
     >
       {actions.map((action) => (

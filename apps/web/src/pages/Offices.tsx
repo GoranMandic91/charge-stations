@@ -1,13 +1,14 @@
 import Box from "@mui/material/Box";
 import React, { useEffect } from "react";
 import { CircularProgress } from "@mui/material";
+import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 
-import { getAllOffices } from "../store/offices";
 import OfficeItem from "../components/OfficeItem";
 import CreateDialog from "../components/CreateDialog";
 import CustomSpeedDial from "../components/SpeedDial";
 import { useAppSelector } from "../hooks/useAppSelector";
 import { useAppDispatch } from "../hooks/useAppDispatch";
+import { getAllOffices, setIsCreateDialogOpen } from "../store/offices";
 
 export default function Offices() {
   const dispatch = useAppDispatch();
@@ -21,20 +22,29 @@ export default function Offices() {
     dispatch(getAllOffices() as any);
   }, [dispatch]);
 
+  const actions = [
+    {
+      icon: <FileCopyIcon />,
+      name: "Create New Office",
+      clickHandler: () => dispatch(setIsCreateDialogOpen(true)),
+    },
+  ];
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        "& > :not(style)": { m: 1, width: 250, height: 250 },
-      }}
-    >
-      {!isLoading &&
-        offices.map((office: any, index: any) => (
-          <OfficeItem {...office} key={index} />
-        ))}
-      {user.role === "admin" && <CustomSpeedDial />}
-      {user.role === "admin" && <CreateDialog />}
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          "& > :not(style)": { m: 1, width: 250, height: 250 },
+        }}
+      >
+        {!isLoading &&
+          offices.map((office: any, index: any) => (
+            <OfficeItem {...office} key={index} />
+          ))}
+      </Box>
+
       {isLoading && (
         <Box
           sx={{
@@ -46,6 +56,8 @@ export default function Offices() {
           <CircularProgress />
         </Box>
       )}
-    </Box>
+      {user.role === "admin" && <CreateDialog />}
+      {user.role === "admin" && <CustomSpeedDial actions={actions} />}
+    </>
   );
 }

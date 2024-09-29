@@ -27,7 +27,6 @@ export default function ChargerItem(charger: Charger & { officeId: string }) {
 
   const handleReserveClick = () => {
     if (available) {
-      console.log(id, officeId);
       dispatch(reserveChargingLot({ chargerId: id, officeId }) as any);
     }
   };
