@@ -10,6 +10,8 @@ import { useAppSelector } from "../hooks/useAppSelector";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { getAllOffices, setIsCreateDialogOpen } from "../store/offices";
 
+const POLLING_INTERVAL = 10000;
+
 export default function Offices() {
   const dispatch = useAppDispatch();
   const { user, offices, isLoading } = useAppSelector((state) => ({
@@ -20,6 +22,11 @@ export default function Offices() {
 
   useEffect(() => {
     dispatch(getAllOffices() as any);
+
+    const intervalId = setInterval(() => {
+      dispatch(dispatch(getAllOffices() as any));
+    }, POLLING_INTERVAL);
+    return () => clearInterval(intervalId);
   }, [dispatch]);
 
   const actions = [

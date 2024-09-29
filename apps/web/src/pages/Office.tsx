@@ -11,6 +11,8 @@ import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useAppSelector } from "../hooks/useAppSelector";
 import { getSingleOffice, reserveChargingLot } from "../store/offices";
 
+const POLLING_INTERVAL = 5000;
+
 export default function Office() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
@@ -32,6 +34,11 @@ export default function Office() {
   useEffect(() => {
     if (id) {
       dispatch(getSingleOffice({ id }) as any);
+
+      const intervalId = setInterval(() => {
+        dispatch(getSingleOffice({ id }) as any);
+      }, POLLING_INTERVAL);
+      return () => clearInterval(intervalId);
     }
   }, [dispatch, id]);
 
