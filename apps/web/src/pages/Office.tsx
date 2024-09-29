@@ -10,16 +10,22 @@ import ChargerQueue from "../components/ChargerQueue";
 import CustomSpeedDial from "../components/SpeedDial";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useAppSelector } from "../hooks/useAppSelector";
-import { getSingleOffice, reserveChargingLot } from "../store/offices";
+import {
+  getOfficeStatistics,
+  getSingleOffice,
+  reserveChargingLot,
+} from "../store/offices";
+import ChargingStatistics from "../components/ChargerStatistics";
 
 const POLLING_INTERVAL = 5000;
 
 export default function Office() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const { user, office, isLoading } = useAppSelector((state) => ({
+  const { user, office, statistics, isLoading } = useAppSelector((state) => ({
     user: state.auth.user,
     office: state.offices.office,
+    statistics: state.offices.statistics,
     isLoading: state.offices.isLoading,
   }));
 
@@ -35,6 +41,7 @@ export default function Office() {
   useEffect(() => {
     if (id) {
       dispatch(getSingleOffice({ id }) as any);
+      dispatch(getOfficeStatistics({ id }) as any);
 
       const intervalId = setInterval(() => {
         dispatch(getSingleOffice({ id }) as any);
@@ -46,6 +53,7 @@ export default function Office() {
   return (
     <>
       {office && <ChargerQueue {...office} />}
+      {statistics && <ChargingStatistics data={statistics} />}
       <Box
         sx={{
           display: "flex",
@@ -70,8 +78,7 @@ export default function Office() {
           <CircularProgress />
         </Box>
       )}
-      {user.role === "admin" && <CreateDialog />}
-      {user.role === "admin" && <CustomSpeedDial actions={actions} />}
+      <CustomSpeedDial actions={actions} />
     </>
   );
 }

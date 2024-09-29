@@ -5,8 +5,15 @@ export const insertOne = async (data: any): Promise<SessionDocument | null> => {
   const { mongoClient } = database();
 
   const currentDate = new Date();
-  const { userId, officeId, chargerId, queuedAt, sessionStart, sessionEnd } =
-    data;
+  const {
+    name,
+    userId,
+    officeId,
+    chargerId,
+    queuedAt,
+    sessionStart,
+    sessionEnd,
+  } = data;
 
   const sessionDuration =
     new Date(sessionEnd).getTime() - new Date(sessionStart).getTime();
@@ -15,6 +22,7 @@ export const insertOne = async (data: any): Promise<SessionDocument | null> => {
     .db()
     .collection<SessionDocument>("sessions")
     .insertOne({
+      name,
       userId,
       officeId,
       chargerId,

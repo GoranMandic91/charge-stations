@@ -40,6 +40,7 @@ export const manageChargers = async (): Promise<void> => {
 
           // store session data
           const sessionData = {
+            name: userRequest.user.name,
             userId: userRequest.user.id,
             officeId: office._id.toHexString(),
             chargerId: office.chargers[index].id,

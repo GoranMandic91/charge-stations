@@ -1,7 +1,13 @@
 import { RootState } from ".";
 import { postCharger } from "../api/chargers";
-import { getOfficeByID, getOffices, postOffice } from "../api/offices";
+import {
+  getOfficeByID,
+  getOffices,
+  getOfficeStatisticsByID,
+  postOffice,
+} from "../api/offices";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 export interface ChargingUser {
   id: string;
   name: string;
@@ -27,15 +33,34 @@ export interface Office {
   updatedAt: Date;
 }
 
-interface OfficesState {
+export interface SessionStats {
+  name: string;
+  userId: string;
+  totalSessions: number;
+}
+
+export interface DurationStats {
+  name: string;
+  userId: string;
+  totalChargingTime: number;
+}
+
+export interface ChargingStatistics {
+  sessions: SessionStats[];
+  duration: DurationStats[];
+}
+
+export interface OfficesState {
   list: Office[];
   office?: Office;
+  statistics?: ChargingStatistics;
   isLoading: boolean;
   isCreateDialogOpen: boolean;
 }
 const initialState: OfficesState = {
   list: [],
   office: undefined,
+  statistics: undefined,
   isLoading: false,
   isCreateDialogOpen: false,
 };
@@ -46,6 +71,14 @@ export const getAllOffices = createAsyncThunk<any, void, { state: RootState }>(
     return await getOffices(thunkAPI.getState().auth.user.token);
   }
 );
+
+export const getOfficeStatistics = createAsyncThunk<
+  any,
+  { id: string },
+  { state: RootState }
+>("offices/getOfficeStatistics", async ({ id }, thunkAPI) => {
+  return await getOfficeStatisticsByID(thunkAPI.getState().auth.user.token, id);
+});
 
 export const getSingleOffice = createAsyncThunk<
   any,
@@ -115,6 +148,17 @@ const officesSlice = createSlice({
     builder.addCase(getSingleOffice.fulfilled, (state, action) => {
       state.isLoading = false;
       state.office = action.payload.office[0];
+    });
+    builder.addCase(getOfficeStatistics.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getOfficeStatistics.rejected, (state) => {
+      state.isLoading = false;
+      state.list = [];
+    });
+    builder.addCase(getOfficeStatistics.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.statistics = action.payload;
     });
   },
 });

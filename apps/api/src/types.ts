@@ -44,6 +44,7 @@ export interface OfficeDocument {
 
 export interface SessionDocument {
   _id: ObjectId;
+  name: string;
   userId: string;
   officeId: string;
   chargerId: string;
