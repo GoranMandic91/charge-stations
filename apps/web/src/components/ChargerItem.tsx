@@ -7,8 +7,10 @@ import {
   Chip,
   Tooltip,
   IconButton,
+  Stack,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
+import PersonIcon from "@mui/icons-material/Person";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import EvStationIcon from "@mui/icons-material/EvStation";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -20,7 +22,8 @@ import { useAppDispatch } from "../hooks/useAppDispatch";
 
 export default function ChargerItem(charger: Charger & { officeId: string }) {
   const dispatch = useAppDispatch();
-  const { id, available, sessionStart, sessionEnd, officeId } = charger;
+  const { id, available, sessionStart, sessionEnd, officeId, reservedBy } =
+    charger;
 
   const handleReserveClick = () => {
     if (available) {
@@ -51,10 +54,46 @@ export default function ChargerItem(charger: Charger & { officeId: string }) {
           icon={available ? <CheckCircleIcon /> : <CancelIcon />}
           sx={{ marginTop: 1 }}
         />
+        {reservedBy?.name && (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ marginTop: 1 }}
+          >
+            <PersonIcon
+              fontSize="small"
+              sx={{ verticalAlign: "middle", marginRight: 0.5 }}
+            />
+            Reserved by: {reservedBy.name}
+          </Typography>
+        )}
         <Typography
           variant="body2"
           color="text.secondary"
-          sx={{ marginTop: 2 }}
+          sx={{ marginTop: 1 }}
+        >
+          {sessionStart ? (
+            <EventAvailableIcon
+              fontSize="small"
+              sx={{ verticalAlign: "middle", marginRight: 0.5 }}
+            />
+          ) : (
+            <EventBusyIcon
+              fontSize="small"
+              sx={{ verticalAlign: "middle", marginRight: 0.5 }}
+            />
+          )}
+          Status:{" "}
+          {sessionStart && !sessionEnd
+            ? "In Progress"
+            : sessionEnd
+              ? "Completed"
+              : "Not Started"}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ marginTop: 1 }}
         >
           <AccessTimeIcon
             fontSize="small"
@@ -78,29 +117,6 @@ export default function ChargerItem(charger: Charger & { officeId: string }) {
           {sessionEnd
             ? new Date(sessionEnd).toLocaleString()
             : "No session ended"}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ marginTop: 2 }}
-        >
-          {sessionStart ? (
-            <EventAvailableIcon
-              fontSize="small"
-              sx={{ verticalAlign: "middle", marginRight: 0.5 }}
-            />
-          ) : (
-            <EventBusyIcon
-              fontSize="small"
-              sx={{ verticalAlign: "middle", marginRight: 0.5 }}
-            />
-          )}
-          Status:{" "}
-          {sessionStart && !sessionEnd
-            ? "In Progress"
-            : sessionEnd
-              ? "Completed"
-              : "Not Started"}
         </Typography>
       </CardContent>
     </Card>

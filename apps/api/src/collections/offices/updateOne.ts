@@ -31,7 +31,7 @@ export const updateOne = async (data: {
 
   let sessionEnd = null;
   const freeChargers = office.chargers.filter((c) => c.available).length;
-  if (freeChargers >= 2) {
+  if (freeChargers <= 1) {
     const currentDateInMS = currentDate.getTime();
     const highDemandInMS = office.highDemandDuration * 60 * 60 * 1000;
     sessionEnd = new Date(currentDateInMS + highDemandInMS);

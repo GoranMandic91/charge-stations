@@ -2,12 +2,17 @@ import { RootState } from ".";
 import { postCharger } from "../api/chargers";
 import { getOfficeByID, getOffices, postOffice } from "../api/offices";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+export interface ChargingUser {
+  id: string;
+  name: string;
+}
 
 export interface Charger {
   id: number;
   available: boolean;
   sessionStart: Date | null;
   sessionEnd: Date | null;
+  reservedBy: ChargingUser | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -63,10 +68,11 @@ export const reserveChargingLot = createAsyncThunk<
   any,
   { state: RootState }
 >("offices/chargers/reserve", async (data, thunkAPI) => {
-  await postCharger(
-    { ...data, userId: thunkAPI.getState().auth.user._id },
-    thunkAPI.getState().auth.user.token
-  );
+  const user = {
+    id: thunkAPI.getState().auth.user._id,
+    name: thunkAPI.getState().auth.user.fullName,
+  };
+  await postCharger({ ...data, user }, thunkAPI.getState().auth.user.token);
   thunkAPI.dispatch(getSingleOffice({ id: data.officeId }));
 });
 
