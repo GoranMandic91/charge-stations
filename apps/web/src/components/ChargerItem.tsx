@@ -1,21 +1,48 @@
 import React from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  Chip,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
+import EvStationIcon from "@mui/icons-material/EvStation";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import { Card, CardContent, CardHeader, Typography, Chip } from "@mui/material";
 
-import { Charger } from "../store/offices";
+import { Charger, reserveChargingLot } from "../store/offices";
+import { useAppDispatch } from "../hooks/useAppDispatch";
 
-export default function ChargerItem(charger: Charger) {
-  const { id, available, sessionStart, sessionEnd } = charger;
+export default function ChargerItem(charger: Charger & { officeId: string }) {
+  const dispatch = useAppDispatch();
+  const { id, available, sessionStart, sessionEnd, officeId } = charger;
+
+  const handleReserveClick = () => {
+    if (available) {
+      console.log(id, officeId);
+      dispatch(reserveChargingLot({ chargerId: id, officeId }) as any);
+    }
+  };
 
   return (
     <Card sx={{ minWidth: 350, margin: "16px", backgroundColor: "#f5f5f5" }}>
       <CardHeader
         title={`Charging Lot #${id}`}
         sx={{ backgroundColor: available ? "#e0f7fa" : "#ffebee" }}
+        action={
+          available && (
+            <Tooltip title="Reserve this charging lot">
+              <IconButton color="success" onClick={handleReserveClick}>
+                <EvStationIcon />
+              </IconButton>
+            </Tooltip>
+          )
+        }
       />
       <CardContent>
         <Chip

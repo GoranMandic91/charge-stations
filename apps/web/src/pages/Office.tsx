@@ -35,7 +35,7 @@ export default function Office() {
       {!isLoading &&
         office &&
         office.chargers.map((charger: any, index: any) => (
-          <ChargerItem {...charger} key={index} />
+          <ChargerItem {...charger} officeId={office._id} key={index} />
         ))}
       {user.role === "admin" && <CustomSpeedDial />}
       {user.role === "admin" && <CreateDialog />}
