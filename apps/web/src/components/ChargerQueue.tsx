@@ -31,10 +31,8 @@ interface ChargerRequest {
 export default function ChargerQueue({ queue }: { queue: ChargerRequest[] }) {
   return (
     <Accordion
-      defaultExpanded
+      defaultExpanded={false}
       sx={{
-        margin: 4,
-        padding: 2,
         borderRadius: 4,
         backgroundColor: "#f5f5f5",
         boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
