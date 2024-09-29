@@ -1,14 +1,11 @@
 import { ObjectId } from "mongodb";
 import { findAll } from "./findAll";
-import { insertOne } from "../sessions/insertOne";
 import { database } from "../../database";
-import { ChargerRequest, OfficeDocument } from "../../types";
-import { getConfig } from "../../config";
+import { insertOne } from "../sessions/insertOne";
+import { Charger, ChargerRequest, OfficeDocument } from "../../types";
 
 export const removeOne = async (params: ChargerRequest): Promise<void> => {
   const { mongoClient } = database();
-
-  const config = getConfig();
 
   const currentDate = new Date();
   const { officeId, chargerId, user } = params;
@@ -36,7 +33,9 @@ export const removeOne = async (params: ChargerRequest): Promise<void> => {
   };
   await insertOne(sessionData);
 
-  const newChargerData = {
+  if (office.queue.length) {
+  }
+  const newChargerData: Charger = {
     id: charger.id,
     available: true,
     sessionStart: null,
@@ -45,6 +44,14 @@ export const removeOne = async (params: ChargerRequest): Promise<void> => {
     updatedAt: currentDate,
     createdAt: charger.createdAt,
   };
+  if (office.queue.length) {
+    const userRequest = office.queue.shift();
+    newChargerData.available = false;
+    newChargerData.sessionStart = currentDate;
+    newChargerData.sessionEnd = null;
+    newChargerData.reservedBy = userRequest?.user ?? null;
+    newChargerData.updatedAt = currentDate;
+  }
 
   await mongoClient()
     .db()
@@ -55,6 +62,7 @@ export const removeOne = async (params: ChargerRequest): Promise<void> => {
         $set: {
           updatedAt: currentDate,
           [`chargers.${charger.id - 1}`]: newChargerData,
+          queue: office.queue,
         },
       }
     );

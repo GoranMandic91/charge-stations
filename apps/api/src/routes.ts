@@ -4,7 +4,7 @@ import { register } from "./routes/auth/register";
 import { getAllOffices } from "./routes/offices/getAllOffices";
 import { getOfficeById } from "./routes/offices/getOfficeById";
 import { postOffice } from "./routes/offices/postOffice";
-import { patchCharger } from "./routes/chargers/putCharger";
+import { patchCharger } from "./routes/chargers/patchCharger";
 import { postCharger } from "./routes/chargers/postCharger";
 import { getOfficeStatistics } from "./routes/offices/getOfficeStatistics";
 
