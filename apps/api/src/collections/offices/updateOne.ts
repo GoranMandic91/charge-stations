@@ -1,16 +1,17 @@
 import { ObjectId } from "mongodb";
 import { database } from "../../database";
-import { OfficeDocument } from "../../types";
+import { ChargingUser, OfficeDocument } from "../../types";
 import { findAll } from "./findAll";
 
 export const updateOne = async (data: {
+  user: ChargingUser;
   officeId: string;
   chargerId: number;
 }): Promise<void> => {
   const { mongoClient } = database();
 
   const currentDate = new Date();
-  const { officeId, chargerId } = data;
+  const { officeId, chargerId, user } = data;
 
   const offices = await findAll({ _id: new ObjectId(officeId) });
   const office = offices[0];
@@ -28,17 +29,23 @@ export const updateOne = async (data: {
     throw new Error("Charger not available");
   }
 
-  const currentDateInMS = currentDate.getTime();
-  const highDemandInMS = office.highDemandDuration * 60 * 60 * 1000;
-  const sessionEnd = new Date(currentDateInMS + highDemandInMS);
+  let sessionEnd = null;
+  const freeChargers = office.chargers.filter((c) => c.available).length;
+  if (freeChargers >= 2) {
+    const currentDateInMS = currentDate.getTime();
+    const highDemandInMS = office.highDemandDuration * 60 * 60 * 1000;
+    sessionEnd = new Date(currentDateInMS + highDemandInMS);
+  }
   const newChargerData = {
     id: charger.id,
     available: false,
     sessionStart: currentDate,
     sessionEnd: sessionEnd,
-    createdAt: charger.createdAt,
+    reservedBy: user,
     updatedAt: currentDate,
+    createdAt: charger.createdAt,
   };
+
   await mongoClient()
     .db()
     .collection<OfficeDocument>("offices")

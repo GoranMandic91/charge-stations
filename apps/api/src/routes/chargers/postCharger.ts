@@ -6,7 +6,12 @@ import { authorization } from "../../middleware/authorization";
 import { updateOne } from "../../collections/offices/updateOne";
 
 export const bookChargerSchema = Joi.object().keys({
-  userId: Joi.string().required(),
+  user: Joi.object()
+    .keys({
+      id: Joi.string().required(),
+      name: Joi.string().required(),
+    })
+    .required(),
   officeId: Joi.string().required(),
   chargerId: Joi.number().min(1).required(),
 });

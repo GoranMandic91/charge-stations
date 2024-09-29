@@ -10,11 +10,17 @@ export interface UserDocument {
   updatedAt: Date;
 }
 
+export interface ChargingUser {
+  id: string;
+  name: string;
+}
+
 export interface Charger {
   id: number;
   available: boolean;
   sessionStart: Date | null;
   sessionEnd: Date | null;
+  reservedBy: ChargingUser | null;
   createdAt: Date;
   updatedAt: Date;
 }
