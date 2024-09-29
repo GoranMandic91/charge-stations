@@ -69,6 +69,9 @@ export const updateOne = async (params: ChargerRequest): Promise<void> => {
     await mongoClient()
       .db()
       .collection<OfficeDocument>("offices")
-      .updateOne({ _id: new ObjectId(officeId) }, { $push: { queue: params } });
+      .updateOne(
+        { _id: new ObjectId(officeId) },
+        { $push: { queue: { ...params, createdAt: currentDate } } }
+      );
   }
 };

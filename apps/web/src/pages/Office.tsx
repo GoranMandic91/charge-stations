@@ -6,6 +6,7 @@ import EvStationIcon from "@mui/icons-material/EvStation";
 
 import ChargerItem from "../components/ChargerItem";
 import CreateDialog from "../components/CreateDialog";
+import ChargerQueue from "../components/ChargerQueue";
 import CustomSpeedDial from "../components/SpeedDial";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useAppSelector } from "../hooks/useAppSelector";
@@ -44,6 +45,7 @@ export default function Office() {
 
   return (
     <>
+      {office && <ChargerQueue {...office} />}
       <Box
         sx={{
           display: "flex",

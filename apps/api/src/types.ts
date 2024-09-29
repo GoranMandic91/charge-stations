@@ -28,6 +28,7 @@ export interface ChargerRequest {
   user: ChargingUser;
   officeId: string;
   chargerId: number;
+  createdAt: Date;
 }
 
 export interface OfficeDocument {
