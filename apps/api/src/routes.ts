@@ -4,6 +4,7 @@ import { register } from "./routes/auth/register";
 import { getAllOffices } from "./routes/offices/getAllOffices";
 import { getOfficeById } from "./routes/offices/getOfficeById";
 import { postOffice } from "./routes/offices/postOffice";
+import { patchCharger } from "./routes/chargers/putCharger";
 import { postCharger } from "./routes/chargers/postCharger";
 import { getOfficeStatistics } from "./routes/offices/getOfficeStatistics";
 
@@ -20,6 +21,7 @@ export const routes = (): Router => {
   router.get("/offices/:id/statistics", getOfficeStatistics);
   router.post("/offices", postOffice);
 
+  router.patch("/chargers/:id", patchCharger);
   router.post("/chargers", postCharger);
 
   return router;
