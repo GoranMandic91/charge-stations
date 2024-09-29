@@ -5,6 +5,7 @@ import { getAllOffices } from "./routes/offices/getAllOffices";
 import { getOfficeById } from "./routes/offices/getOfficeById";
 import { postOffice } from "./routes/offices/postOffice";
 import { postCharger } from "./routes/chargers/postCharger";
+import { getOfficeStatistics } from "./routes/offices/getOfficeStatistics";
 
 export const routes = (): Router => {
   const router = Router();
@@ -16,6 +17,7 @@ export const routes = (): Router => {
 
   router.get("/offices", getAllOffices);
   router.get("/offices/:id", getOfficeById);
+  router.get("/offices/:id/statistics", getOfficeStatistics);
   router.post("/offices", postOffice);
 
   router.post("/chargers", postCharger);

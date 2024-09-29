@@ -1,6 +1,7 @@
 import { getConfig } from "../../config";
 import { database } from "../../database";
 import { OfficeDocument } from "../../types";
+import { insertOne } from "../sessions/insertOne";
 
 export const manageChargers = async (): Promise<void> => {
   const { mongoClient } = database();
@@ -36,6 +37,18 @@ export const manageChargers = async (): Promise<void> => {
         const userRequest = office.queue.shift();
         if (userRequest) {
           const index = office.chargers.findIndex(({ id }) => id === chargerId);
+
+          // store session data
+          const sessionData = {
+            userId: userRequest.user.id,
+            officeId: office._id.toHexString(),
+            chargerId: office.chargers[index].id,
+            queuedAt: userRequest.createdAt,
+            sessionStart: office.chargers[index].sessionStart,
+            sessionEnd: new Date(),
+          };
+          await insertOne(sessionData);
+
           office.chargers[index].available = false;
           office.chargers[index].reservedBy = userRequest.user;
           office.chargers[index].sessionStart = currentDate;

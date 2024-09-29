@@ -41,3 +41,16 @@ export interface OfficeDocument {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface SessionDocument {
+  _id: ObjectId;
+  userId: string;
+  officeId: string;
+  chargerId: string;
+  queuedAt: Date;
+  sessionStart: Date;
+  sessionEnd: Date;
+  sessionDuration: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
