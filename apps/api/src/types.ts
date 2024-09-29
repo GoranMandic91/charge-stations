@@ -10,11 +10,6 @@ export interface UserDocument {
   updatedAt: Date;
 }
 
-export interface ChargingUser {
-  id: string;
-  name: string;
-}
-
 export interface Charger {
   id: number;
   available: boolean;
@@ -25,6 +20,10 @@ export interface Charger {
   updatedAt: Date;
 }
 
+export interface ChargingUser {
+  id: string;
+  name: string;
+}
 export interface ChargerRequest {
   user: ChargingUser;
   officeId: string;

@@ -160,7 +160,7 @@ export default function CreateDialog() {
                   helperText={chargersErrorMessage}
                   color={chargersError ? "error" : "primary"}
                   slotProps={{
-                    input: { inputProps: { min: 2 } },
+                    input: { inputProps: { min: 1 } },
                     inputLabel: { shrink: true },
                   }}
                 />

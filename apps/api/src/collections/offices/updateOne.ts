@@ -2,9 +2,12 @@ import { ObjectId } from "mongodb";
 import { findAll } from "./findAll";
 import { database } from "../../database";
 import { Charger, ChargerRequest, OfficeDocument } from "../../types";
+import { getConfig } from "../../config";
 
 export const updateOne = async (params: ChargerRequest): Promise<void> => {
   const { mongoClient } = database();
+
+  const config = getConfig();
 
   const currentDate = new Date();
   const { officeId, chargerId, user } = params;
@@ -36,7 +39,7 @@ export const updateOne = async (params: ChargerRequest): Promise<void> => {
     const freeChargers = office.chargers.filter((c) => c.available).length;
     if (freeChargers <= 1) {
       const currentDateInMS = currentDate.getTime();
-      const highDemandInMS = office.highDemandDuration * 60 * 60 * 1000;
+      const highDemandInMS = office.highDemandDuration * config.durationInMS;
       sessionEnd = new Date(currentDateInMS + highDemandInMS);
     }
     const newChargerData = {
