@@ -10,7 +10,7 @@ import { useAppSelector } from "../hooks/useAppSelector";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { getAllOffices, setIsCreateDialogOpen } from "../store/offices";
 
-const POLLING_INTERVAL = 10000;
+const POLLING_INTERVAL = 30000;
 
 export default function Offices() {
   const dispatch = useAppDispatch();

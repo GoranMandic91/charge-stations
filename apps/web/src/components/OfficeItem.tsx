@@ -37,7 +37,7 @@ export default function OfficeItem(office: Office) {
         <Typography
           variant="body2"
           color="text.secondary"
-          sx={{ marginTop: 2 }}
+          sx={{ marginTop: 1 }}
         >
           Chargers: {chargers.length}
         </Typography>
@@ -49,7 +49,7 @@ export default function OfficeItem(office: Office) {
           color="primary"
           component={RouterLink}
           to={`/offices/${_id}`}
-          sx={{ marginTop: 2 }}
+          sx={{ marginTop: 1 }}
           fullWidth
         >
           More Details

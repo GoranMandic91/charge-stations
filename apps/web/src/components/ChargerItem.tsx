@@ -16,11 +16,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import {
-  Charger,
-  releaseChargingLot,
-  reserveChargingLot,
-} from "../store/offices";
+import { releaseChargingLot, reserveChargingLot } from "../store/offices";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 
 export default function ChargerItem({ charger, officeId, user }: any) {

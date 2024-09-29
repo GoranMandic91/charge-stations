@@ -5,7 +5,6 @@ import { CircularProgress } from "@mui/material";
 import EvStationIcon from "@mui/icons-material/EvStation";
 
 import ChargerItem from "../components/ChargerItem";
-import CreateDialog from "../components/CreateDialog";
 import ChargerQueue from "../components/ChargerQueue";
 import CustomSpeedDial from "../components/SpeedDial";
 import { useAppDispatch } from "../hooks/useAppDispatch";
@@ -17,7 +16,7 @@ import {
 } from "../store/offices";
 import ChargingStatistics from "../components/ChargerStatistics";
 
-const POLLING_INTERVAL = 5000;
+const POLLING_INTERVAL = 10000;
 
 export default function Office() {
   const { id } = useParams();
@@ -45,6 +44,7 @@ export default function Office() {
 
       const intervalId = setInterval(() => {
         dispatch(getSingleOffice({ id }) as any);
+        dispatch(getOfficeStatistics({ id }) as any);
       }, POLLING_INTERVAL);
       return () => clearInterval(intervalId);
     }
