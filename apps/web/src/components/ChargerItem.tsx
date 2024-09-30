@@ -6,7 +6,7 @@ import {
   Typography,
   Chip,
   Tooltip,
-  IconButton,
+  Button,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import PersonIcon from "@mui/icons-material/Person";
@@ -46,16 +46,26 @@ export default function ChargerItem({ charger, officeId, user }: any) {
         action={
           available ? (
             <Tooltip title="Reserve this charging lot">
-              <IconButton color="success" onClick={handleReserveClick}>
-                <EvStationIcon />
-              </IconButton>
+              <Button
+                color="success"
+                variant="outlined"
+                onClick={handleReserveClick}
+                endIcon={<EvStationIcon />}
+              >
+                Reserve
+              </Button>
             </Tooltip>
           ) : (
             showRelease && (
               <Tooltip title="Release this charging lot">
-                <IconButton color="error" onClick={handleReleaseClick}>
-                  <ExitToAppIcon />
-                </IconButton>
+                <Button
+                  color="error"
+                  variant="outlined"
+                  onClick={handleReleaseClick}
+                  endIcon={<ExitToAppIcon />}
+                >
+                  Release
+                </Button>
               </Tooltip>
             )
           )
@@ -66,7 +76,6 @@ export default function ChargerItem({ charger, officeId, user }: any) {
           label={available ? "Available" : "Unavailable"}
           color={available ? "success" : "error"}
           icon={available ? <CheckCircleIcon /> : <CancelIcon />}
-          sx={{ marginTop: 1 }}
         />
         {reservedBy?.name && (
           <Typography
@@ -113,7 +122,7 @@ export default function ChargerItem({ charger, officeId, user }: any) {
             fontSize="small"
             sx={{ verticalAlign: "middle", marginRight: 0.5 }}
           />
-          Session Start:
+          Session start:
           {sessionStart
             ? new Date(sessionStart).toLocaleString()
             : "No session started"}
@@ -127,7 +136,7 @@ export default function ChargerItem({ charger, officeId, user }: any) {
             fontSize="small"
             sx={{ verticalAlign: "middle", marginRight: 0.5 }}
           />
-          Session End:
+          Session end:
           {sessionEnd
             ? new Date(sessionEnd).toLocaleString()
             : "No session ended"}

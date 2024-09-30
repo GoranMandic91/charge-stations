@@ -13,13 +13,15 @@ import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import { removeUser } from "../store/auth";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useAppSelector } from "../hooks/useAppSelector";
+import { Tooltip } from "@mui/material";
 
 export default function MenuAppBar() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { office } = useAppSelector((state) => ({
+  const { user, office } = useAppSelector((state) => ({
+    user: state.auth.user,
     office: state.offices.office,
   }));
 
@@ -58,21 +60,30 @@ export default function MenuAppBar() {
           )}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {isOfficeDetailPage
-              ? `${office?.name}, ${office?.location}`
+              ? `${office?.name}, ${office?.location}, Max charge time ${office?.highDemandDuration} minute(s) during high demand`
               : "Charge Stations"}
           </Typography>
           {
             <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
+              <Box display="flex" alignItems="center">
+                <Typography
+                  variant="h6"
+                  component="span"
+                  sx={{ marginRight: 1 }}
+                >
+                  {user.fullName}
+                </Typography>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </Box>
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}

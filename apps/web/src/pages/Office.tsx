@@ -16,7 +16,7 @@ import {
 } from "../store/offices";
 import ChargingStatistics from "../components/ChargerStatistics";
 
-const POLLING_INTERVAL = 10000;
+const POLLING_INTERVAL = 5000;
 
 export default function Office() {
   const { id } = useParams();
@@ -61,8 +61,7 @@ export default function Office() {
           "& > :not(style)": { m: 1, width: 250, height: 250 },
         }}
       >
-        {!isLoading &&
-          office &&
+        {office &&
           office.chargers.map((charger: any, index: any) => (
             <ChargerItem
               charger={charger}

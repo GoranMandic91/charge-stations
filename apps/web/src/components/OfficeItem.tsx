@@ -30,7 +30,7 @@ export default function OfficeItem(office: Office) {
       />
       <CardContent>
         <Chip
-          label={`Max Charge Time: ${highDemandDuration} hour(s)`}
+          label={`Max charge time ${highDemandDuration} minute(s)`}
           color="warning"
           icon={<FlashOnIcon />}
         />

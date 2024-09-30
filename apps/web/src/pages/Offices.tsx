@@ -10,7 +10,7 @@ import { useAppSelector } from "../hooks/useAppSelector";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { getAllOffices, setIsCreateDialogOpen } from "../store/offices";
 
-const POLLING_INTERVAL = 30000;
+const POLLING_INTERVAL = 10000;
 
 export default function Offices() {
   const dispatch = useAppDispatch();
@@ -46,10 +46,9 @@ export default function Offices() {
           "& > :not(style)": { m: 1, width: 250, height: 250 },
         }}
       >
-        {!isLoading &&
-          offices.map((office: any, index: any) => (
-            <OfficeItem {...office} key={index} />
-          ))}
+        {offices.map((office: any, index: any) => (
+          <OfficeItem {...office} key={index} />
+        ))}
       </Box>
 
       {isLoading && (
