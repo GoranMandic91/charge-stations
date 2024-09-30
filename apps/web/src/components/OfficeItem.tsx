@@ -17,7 +17,7 @@ export default function OfficeItem(office: Office) {
   const { _id, name, location, chargers, highDemandDuration } = office;
 
   return (
-    <Card sx={{ maxWidth: 500, margin: "16px", backgroundColor: "#e3f2fd" }}>
+    <Card sx={{ minWidth: 350, margin: "16px", backgroundColor: "#e3f2fd" }}>
       <CardHeader
         title={<Typography variant="h6">{name}</Typography>}
         subheader={
@@ -49,7 +49,7 @@ export default function OfficeItem(office: Office) {
           color="primary"
           component={RouterLink}
           to={`/offices/${_id}`}
-          sx={{ marginTop: 1 }}
+          sx={{ marginTop: 2 }}
           fullWidth
         >
           More Details
