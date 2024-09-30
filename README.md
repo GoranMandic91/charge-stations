@@ -55,13 +55,13 @@ npx create-turbo@latest -e kitchen-sink
 Before you begin, ensure you have the following installed on your machine:
 
 - [Node.js](https://nodejs.org/) (version 20.x or higher)
-- [PNPM](https://pnpm.io/) (Package manager, similar to npm/yarn)
+- [PNPM](https://pnpm.io/) (Package manager, similar to npm/yarn, version 9.1.x)
 
 ### 1. Clone the Repository
 
 ```bash
 git clone git@github.com:GoranMandic91/charge-stations.git
-cd charging-system
+cd charge-system
 ```
 
 ### 2. Install Dependencies
@@ -88,7 +88,7 @@ Fill in the necessary values in the `.env` file for the API, such as:
 # Example .env file for API
 PORT=3000
 SECRET=secret
-DB_URL=mongodb://localhost:27017/charging-system
+DB_URL=
 DURATION_IN_MS=60000
 ```
 
