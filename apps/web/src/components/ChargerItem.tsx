@@ -77,23 +77,21 @@ export default function ChargerItem({ charger, officeId, user }: any) {
           color={available ? "success" : "error"}
           icon={available ? <CheckCircleIcon /> : <CancelIcon />}
         />
-        {reservedBy?.name && (
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ marginTop: 1 }}
-          >
-            <PersonIcon
-              fontSize="small"
-              sx={{ verticalAlign: "middle", marginRight: 0.5 }}
-            />
-            Reserved by: {reservedBy.name}
-          </Typography>
-        )}
         <Typography
           variant="body2"
           color="text.secondary"
-          sx={{ marginTop: 1 }}
+          sx={{ marginTop: 2 }}
+        >
+          <PersonIcon
+            fontSize="small"
+            sx={{ verticalAlign: "middle", marginRight: 0.5 }}
+          />
+          Reserved by: {reservedBy?.name ?? "N/A"}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ marginTop: 2 }}
         >
           {sessionStart ? (
             <EventAvailableIcon
@@ -106,17 +104,12 @@ export default function ChargerItem({ charger, officeId, user }: any) {
               sx={{ verticalAlign: "middle", marginRight: 0.5 }}
             />
           )}
-          Status:{" "}
-          {sessionStart && !sessionEnd
-            ? "In Progress"
-            : sessionEnd
-              ? "Completed"
-              : "Not Started"}
+          Status: {sessionStart ? "In Progress" : "Not Started"}
         </Typography>
         <Typography
           variant="body2"
           color="text.secondary"
-          sx={{ marginTop: 1 }}
+          sx={{ marginTop: 2 }}
         >
           <AccessTimeIcon
             fontSize="small"
@@ -126,20 +119,6 @@ export default function ChargerItem({ charger, officeId, user }: any) {
           {sessionStart
             ? new Date(sessionStart).toLocaleString()
             : "No session started"}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ marginTop: 1 }}
-        >
-          <AccessTimeIcon
-            fontSize="small"
-            sx={{ verticalAlign: "middle", marginRight: 0.5 }}
-          />
-          Session end:
-          {sessionEnd
-            ? new Date(sessionEnd).toLocaleString()
-            : "No session ended"}
         </Typography>
       </CardContent>
     </Card>

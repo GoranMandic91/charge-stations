@@ -96,7 +96,7 @@ export default function ChargerQueue({ queue }: { queue: ChargerRequest[] }) {
                         color="textSecondary"
                         component="span"
                       >
-                        Created at:
+                        Queued at:
                         {new Date(request.createdAt).toLocaleString()}
                       </Typography>
                     }
