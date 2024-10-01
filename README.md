@@ -61,7 +61,7 @@ Before you begin, ensure you have the following installed on your machine:
 
 ```bash
 git clone git@github.com:GoranMandic91/charge-stations.git
-cd charge-system
+cd charge-stations
 ```
 
 ### 2. Install Dependencies
