@@ -29,13 +29,11 @@ export const removeOne = async (params: ChargerRequest): Promise<void> => {
     chargerId: charger.id,
     queuedAt: null,
     sessionStart: charger.sessionStart,
-    sessionEnd: new Date(),
+    sessionEnd: currentDate,
   };
   await insertOne(sessionData);
 
-  if (office.queue.length) {
-  }
-  const newChargerData: Charger = {
+  let newChargerData: Charger = {
     id: charger.id,
     available: true,
     sessionStart: null,
@@ -46,11 +44,13 @@ export const removeOne = async (params: ChargerRequest): Promise<void> => {
   };
   if (office.queue.length) {
     const userRequest = office.queue.shift();
-    newChargerData.available = false;
-    newChargerData.sessionStart = currentDate;
-    newChargerData.sessionEnd = null;
-    newChargerData.reservedBy = userRequest?.user ?? null;
-    newChargerData.updatedAt = currentDate;
+    newChargerData = {
+      ...newChargerData,
+      available: false,
+      sessionStart: currentDate,
+      reservedBy: userRequest?.user ?? null,
+      updatedAt: currentDate,
+    };
   }
 
   await mongoClient()

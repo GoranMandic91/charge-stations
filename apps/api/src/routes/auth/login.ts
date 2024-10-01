@@ -14,10 +14,7 @@ const loginHandler: RequestHandler = async (req, res) => {
   if (user && check(password, user.password)) {
     const payload = { email: user.email, userId: user._id };
 
-    const currentTime = new Date().getTime();
     const oneDayInSeconds = 24 * 60 * 60;
-    const oneDayInMs = oneDayInSeconds * 1000;
-    const expires = new Date(currentTime + oneDayInMs);
     const token = jwt.sign(payload, config.secret, {
       expiresIn: oneDayInSeconds,
     });

@@ -35,19 +35,11 @@ export const updateOne = async (params: ChargerRequest): Promise<void> => {
 
   if (charger) {
     // there is available chargers, take one and update office document
-    let sessionEnd = null;
-    const freeChargers = office.chargers.filter((c) => c.available).length;
-    if (freeChargers <= 1) {
-      const currentDateInMS = currentDate.getTime();
-      const highDemandInMS = office.highDemandDuration * config.durationInMS;
-      sessionEnd = new Date(currentDateInMS + highDemandInMS);
-    }
     const newChargerData = {
       id: charger.id,
       available: false,
-      sessionStart: currentDate,
-      sessionEnd: sessionEnd,
       reservedBy: user,
+      sessionStart: currentDate,
       updatedAt: currentDate,
       createdAt: charger.createdAt,
     };
