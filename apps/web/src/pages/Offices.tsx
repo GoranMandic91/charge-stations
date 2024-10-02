@@ -8,7 +8,7 @@ import CreateDialog from "../components/CreateDialog";
 import CustomSpeedDial from "../components/SpeedDial";
 import { useAppSelector } from "../hooks/useAppSelector";
 import { useAppDispatch } from "../hooks/useAppDispatch";
-import { getAllOffices, setIsCreateDialogOpen } from "../store/offices";
+import { getAllOffices, Office, setIsCreateDialogOpen } from "../store/offices";
 
 const POLLING_INTERVAL = 10000;
 
@@ -21,10 +21,10 @@ export default function Offices() {
   }));
 
   useEffect(() => {
-    dispatch(getAllOffices() as any);
+    dispatch(getAllOffices());
 
     const intervalId = setInterval(() => {
-      dispatch(dispatch(getAllOffices() as any));
+      dispatch(getAllOffices());
     }, POLLING_INTERVAL);
     return () => clearInterval(intervalId);
   }, [dispatch]);
@@ -46,7 +46,7 @@ export default function Offices() {
           "& > :not(style)": { m: 1, width: 250, height: 250 },
         }}
       >
-        {offices.map((office: any, index: any) => (
+        {offices.map((office: Office, index: number) => (
           <OfficeItem {...office} key={index} />
         ))}
       </Box>
@@ -62,8 +62,8 @@ export default function Offices() {
           <CircularProgress />
         </Box>
       )}
-      {user.role === "admin" && <CreateDialog />}
-      {user.role === "admin" && <CustomSpeedDial actions={actions} />}
+      {user?.role === "admin" && <CreateDialog />}
+      {user?.role === "admin" && <CustomSpeedDial actions={actions} />}
     </>
   );
 }

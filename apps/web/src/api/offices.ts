@@ -1,14 +1,17 @@
 import { API_URL } from "../config";
 import { fetchJson } from "./fetch";
-import { Office } from "../store/offices";
+import { ChargingStatistics, Office } from "../store/offices";
 
-export const getOffices = (token: string): Promise<Office[]> =>
+export const getOffices = (token: string): Promise<{ offices: Office[] }> =>
   fetchJson(`${API_URL}/offices`, {
     method: "GET",
     headers: { "Content-Type": "application/json", Authorization: token },
   });
 
-export const getOfficeByID = (token: string, id: string): Promise<Office[]> =>
+export const getOfficeByID = (
+  token: string,
+  id: string
+): Promise<{ office: Office[] }> =>
   fetchJson(`${API_URL}/offices/${id}`, {
     method: "GET",
     headers: { "Content-Type": "application/json", Authorization: token },
@@ -17,18 +20,28 @@ export const getOfficeByID = (token: string, id: string): Promise<Office[]> =>
 export const getOfficeStatisticsByID = (
   token: string,
   id: string
-): Promise<Office[]> =>
+): Promise<ChargingStatistics> =>
   fetchJson(`${API_URL}/offices/${id}/statistics`, {
     method: "GET",
     headers: { "Content-Type": "application/json", Authorization: token },
   });
 
-export const postOffice = (data: any, token: string): Promise<any[]> =>
+export interface OfficeParams {
+  name?: string;
+  location?: string;
+  numOfChargers?: string;
+  highDemandDuration?: string;
+}
+
+export const postOffice = (
+  params: OfficeParams,
+  token: string
+): Promise<{ offices: Office[] }[]> =>
   fetchJson(`${API_URL}/offices`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: token,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(params),
   });

@@ -16,27 +16,42 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import { releaseChargingLot, reserveChargingLot } from "../store/offices";
+import {
+  Charger,
+  releaseChargingLot,
+  reserveChargingLot,
+} from "../store/offices";
 import { useAppDispatch } from "../hooks/useAppDispatch";
+import { User } from "../store/auth";
 
-export default function ChargerItem({ charger, officeId, user }: any) {
+interface ChargerItemProps {
+  charger: Charger;
+  officeId: string;
+  user?: User;
+}
+
+export default function ChargerItem({
+  charger,
+  officeId,
+  user,
+}: ChargerItemProps) {
   const dispatch = useAppDispatch();
   const { id, available, sessionStart, sessionEnd, reservedBy } = charger;
 
   const handleReserveClick = () => {
     if (available) {
-      dispatch(reserveChargingLot({ chargerId: id, officeId }) as any);
+      dispatch(reserveChargingLot({ chargerId: id, officeId }));
     }
   };
 
   const handleReleaseClick = () => {
     if (!available) {
-      dispatch(releaseChargingLot({ chargerId: id, officeId }) as any);
+      dispatch(releaseChargingLot({ chargerId: id, officeId }));
     }
   };
 
   const showRelease =
-    !available && (reservedBy.id === user._id || user.role === "admin");
+    !available && (reservedBy?.id === user?._id || user?.role === "admin");
 
   return (
     <Card sx={{ minWidth: 350, margin: "16px", backgroundColor: "#f5f5f5" }}>

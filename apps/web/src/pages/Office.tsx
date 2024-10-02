@@ -10,6 +10,7 @@ import CustomSpeedDial from "../components/SpeedDial";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useAppSelector } from "../hooks/useAppSelector";
 import {
+  Charger,
   getOfficeStatistics,
   getSingleOffice,
   reserveChargingLot,
@@ -32,19 +33,22 @@ export default function Office() {
     {
       icon: <EvStationIcon />,
       name: "Reserve charging lot",
-      clickHandler: () =>
-        dispatch(reserveChargingLot({ officeId: office._id }) as any),
+      clickHandler: () => {
+        if (office) {
+          dispatch(reserveChargingLot({ officeId: office._id }));
+        }
+      },
     },
   ];
 
   useEffect(() => {
     if (id) {
-      dispatch(getSingleOffice({ id }) as any);
-      dispatch(getOfficeStatistics({ id }) as any);
+      dispatch(getSingleOffice({ id }));
+      dispatch(getOfficeStatistics({ id }));
 
       const intervalId = setInterval(() => {
-        dispatch(getSingleOffice({ id }) as any);
-        dispatch(getOfficeStatistics({ id }) as any);
+        dispatch(getSingleOffice({ id }));
+        dispatch(getOfficeStatistics({ id }));
       }, POLLING_INTERVAL);
       return () => clearInterval(intervalId);
     }
@@ -62,7 +66,7 @@ export default function Office() {
         }}
       >
         {office &&
-          office.chargers.map((charger: any, index: any) => (
+          office.chargers.map((charger: Charger, index: number) => (
             <ChargerItem
               charger={charger}
               officeId={office._id}

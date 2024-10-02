@@ -1,7 +1,8 @@
 import { API_URL } from "../config";
+import { User } from "../store/auth";
 import { fetchJson } from "./fetch";
 
-export const postLogin = (email: string, password: string): Promise<null> =>
+export const postLogin = (email: string, password: string): Promise<User> =>
   fetchJson(`${API_URL}/auth/login`, {
     method: "POST",
     headers: {

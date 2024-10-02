@@ -1,7 +1,16 @@
 import { API_URL } from "../config";
 import { fetchJson } from "./fetch";
 
-export const postCharger = (data: any, token: string): Promise<any[]> =>
+export interface ChargerParams {
+  officeId: string;
+  chargerId?: number;
+  user?: { id?: string; name?: string };
+}
+
+export const postCharger = (
+  data: ChargerParams,
+  token: string
+): Promise<void> =>
   fetchJson(`${API_URL}/chargers`, {
     method: "POST",
     headers: {
@@ -11,7 +20,10 @@ export const postCharger = (data: any, token: string): Promise<any[]> =>
     body: JSON.stringify(data),
   });
 
-export const patchCharger = (data: any, token: string): Promise<any[]> =>
+export const patchCharger = (
+  data: ChargerParams,
+  token: string
+): Promise<void> =>
   fetchJson(`${API_URL}/chargers/${data.chargerId}`, {
     method: "PATCH",
     headers: {

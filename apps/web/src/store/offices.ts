@@ -1,9 +1,10 @@
 import { RootState } from ".";
-import { patchCharger, postCharger } from "../api/chargers";
+import { ChargerParams, patchCharger, postCharger } from "../api/chargers";
 import {
   getOfficeByID,
   getOffices,
   getOfficeStatisticsByID,
+  OfficeParams,
   postOffice,
 } from "../api/offices";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -26,6 +27,7 @@ export interface Charger {
 export interface Office {
   _id: string;
   name: string;
+  queue: any[];
   location: string;
   chargers: Charger[];
   highDemandDuration: number;
@@ -57,6 +59,7 @@ export interface OfficesState {
   isLoading: boolean;
   isCreateDialogOpen: boolean;
 }
+
 const initialState: OfficesState = {
   list: [],
   office: undefined,
@@ -65,60 +68,65 @@ const initialState: OfficesState = {
   isCreateDialogOpen: false,
 };
 
-export const getAllOffices = createAsyncThunk<any, void, { state: RootState }>(
-  "offices/getAll",
-  async (_, thunkAPI) => {
-    return await getOffices(thunkAPI.getState().auth.user.token);
-  }
-);
+export const getAllOffices = createAsyncThunk<
+  { offices: Office[] },
+  void,
+  { state: RootState }
+>("offices/getAll", async (_, thunkAPI) => {
+  return await getOffices(thunkAPI.getState().auth.user?.token!);
+});
 
 export const getOfficeStatistics = createAsyncThunk<
-  any,
+  ChargingStatistics,
   { id: string },
   { state: RootState }
 >("offices/getOfficeStatistics", async ({ id }, thunkAPI) => {
-  return await getOfficeStatisticsByID(thunkAPI.getState().auth.user.token, id);
+  return await getOfficeStatisticsByID(
+    thunkAPI.getState().auth.user?.token!,
+    id
+  );
 });
 
 export const getSingleOffice = createAsyncThunk<
-  any,
+  { office: Office[] },
   { id: string },
   { state: RootState }
 >("offices/getSingleOffice", async ({ id }, thunkAPI) => {
-  return await getOfficeByID(thunkAPI.getState().auth.user.token, id);
+  return await getOfficeByID(thunkAPI.getState().auth.user?.token!, id);
 });
 
-export const createNewOffice = createAsyncThunk<any, any, { state: RootState }>(
-  "offices/postOffice",
-  async (data, thunkAPI) => {
-    await postOffice(data, thunkAPI.getState().auth.user.token);
-    thunkAPI.dispatch(getAllOffices());
-  }
-);
+export const createNewOffice = createAsyncThunk<
+  void,
+  OfficeParams,
+  { state: RootState }
+>("offices/postOffice", async (data, thunkAPI) => {
+  await postOffice(data, thunkAPI.getState().auth.user?.token!);
+  thunkAPI.dispatch(getAllOffices());
+});
 
 export const reserveChargingLot = createAsyncThunk<
-  any,
-  any,
+  void,
+  ChargerParams,
   { state: RootState }
 >("offices/chargers/reserve", async (data, thunkAPI) => {
   const user = {
-    id: thunkAPI.getState().auth.user._id,
-    name: thunkAPI.getState().auth.user.fullName,
+    id: thunkAPI.getState().auth.user?._id,
+    name: thunkAPI.getState().auth.user?.fullName,
   };
-  await postCharger({ ...data, user }, thunkAPI.getState().auth.user.token);
+  await postCharger({ ...data, user }, thunkAPI.getState().auth.user?.token!);
   thunkAPI.dispatch(getSingleOffice({ id: data.officeId }));
 });
 
 export const releaseChargingLot = createAsyncThunk<
-  any,
-  any,
+  void,
+  ChargerParams,
   { state: RootState }
 >("offices/chargers/release", async (data, thunkAPI) => {
   const user = {
-    id: thunkAPI.getState().auth.user._id,
-    name: thunkAPI.getState().auth.user.fullName,
+    id: thunkAPI.getState().auth.user?._id,
+    name: thunkAPI.getState().auth.user?.fullName,
   };
-  await patchCharger({ ...data, user }, thunkAPI.getState().auth.user.token);
+  await patchCharger({ ...data, user }, thunkAPI.getState().auth.user?.token!);
   thunkAPI.dispatch(getSingleOffice({ id: data.officeId }));
 });
 

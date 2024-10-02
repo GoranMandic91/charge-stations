@@ -71,7 +71,7 @@ export default function MenuAppBar() {
                   component="span"
                   sx={{ marginRight: 1 }}
                 >
-                  {user.fullName}
+                  {user?.fullName}
                 </Typography>
                 <IconButton
                   size="large"

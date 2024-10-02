@@ -85,12 +85,7 @@ export default function CreateDialog() {
     const highDemandDuration = data.get("duration")?.toString();
 
     dispatch(
-      createNewOffice({
-        location,
-        name,
-        highDemandDuration,
-        numOfChargers,
-      }) as any
+      createNewOffice({ location, name, highDemandDuration, numOfChargers })
     );
     handleClose();
   };

@@ -10,7 +10,7 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, auth);
-const store: EnhancedStore = configureStore({
+const store = configureStore({
   reducer: {
     auth: persistedReducer,
     offices: offices,

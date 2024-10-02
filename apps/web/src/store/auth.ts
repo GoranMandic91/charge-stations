@@ -2,17 +2,28 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { postLogin, postRegister } from "../api/auth";
 
-interface AuthState {
-  user: any;
+export interface User {
+  _id: string;
+  email: string;
+  token: string;
+  fullName: string;
+  role: "regular" | "admin";
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface AuthState {
+  user?: User;
   isLoading: boolean;
 }
+
 const initialState: AuthState = {
   user: undefined,
   isLoading: false,
 };
 
 export const login = createAsyncThunk<
-  null,
+  User,
   { email: string; password: string },
   { state: RootState }
 >("auth/login", async ({ email, password }, thunkAPI) => {
@@ -36,7 +47,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<any>) => {
+    setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
     removeUser: (state) => {

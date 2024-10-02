@@ -100,14 +100,7 @@ export default function Register() {
     const password = data.get("password")?.toString();
 
     if (email && password && fullName) {
-      await dispatch(
-        register({
-          email,
-          password,
-          fullName,
-          role: "regular",
-        }) as any
-      );
+      await dispatch(register({ email, password, fullName, role: "regular" }));
       navigate("/login");
     }
   };

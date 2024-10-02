@@ -66,7 +66,7 @@ export default function Login() {
     const password = data.get("password")?.toString();
 
     if (email && password) {
-      dispatch(login({ email, password }) as any);
+      dispatch(login({ email, password }));
     }
   };
 
