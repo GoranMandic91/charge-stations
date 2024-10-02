@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import { findAll } from "./findAll";
 import { database } from "../../database";
-import { insertOne } from "../sessions/insertOne";
+import { insertOne, InsertSessionParams } from "../sessions/insertOne";
 import { Charger, ChargerRequest, OfficeDocument } from "../../types";
 
 export const removeOne = async (params: ChargerRequest): Promise<void> => {
@@ -22,13 +22,13 @@ export const removeOne = async (params: ChargerRequest): Promise<void> => {
     throw new Error("Charger not exists");
   }
 
-  const sessionData = {
+  const sessionData: InsertSessionParams = {
     name: charger.reservedBy?.name,
     userId: charger.reservedBy?.id,
     officeId: office._id.toHexString(),
     chargerId: charger.id,
     queuedAt: null,
-    sessionStart: charger.sessionStart,
+    sessionStart: charger.sessionStart!,
     sessionEnd: currentDate,
   };
   await insertOne(sessionData);

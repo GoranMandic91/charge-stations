@@ -2,7 +2,26 @@ import { ObjectId } from "mongodb";
 import { database } from "../../database";
 import { SessionDocument } from "../../types";
 
-export const findSessionStatistics = async (id: string): Promise<any> => {
+export interface SessionStats {
+  name: string;
+  userId: string;
+  totalSessions: number;
+}
+
+export interface DurationStats {
+  name: string;
+  userId: string;
+  totalChargingTime: number;
+}
+
+export interface ChargingStatistics {
+  sessions: SessionStats[];
+  duration: DurationStats[];
+}
+
+export const findSessionStatistics = async (
+  id: string
+): Promise<ChargingStatistics> => {
   const { mongoClient } = database();
 
   const sessionsCollection = mongoClient()
@@ -10,7 +29,7 @@ export const findSessionStatistics = async (id: string): Promise<any> => {
     .collection<SessionDocument>("sessions");
 
   const mostSessions = await sessionsCollection
-    .aggregate([
+    .aggregate<SessionStats>([
       { $match: { officeId: id } },
       {
         $group: {
@@ -32,7 +51,7 @@ export const findSessionStatistics = async (id: string): Promise<any> => {
     .toArray();
 
   const longestChargingTime = await sessionsCollection
-    .aggregate([
+    .aggregate<DurationStats>([
       { $match: { officeId: id } },
       {
         $group: {

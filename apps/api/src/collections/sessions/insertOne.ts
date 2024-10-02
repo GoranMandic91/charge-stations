@@ -1,7 +1,19 @@
 import { database } from "../../database";
 import { SessionDocument } from "../../types";
 
-export const insertOne = async (data: any): Promise<SessionDocument | null> => {
+export interface InsertSessionParams {
+  name?: string;
+  userId?: string;
+  officeId: string;
+  chargerId: number;
+  queuedAt: Date | null;
+  sessionStart: Date;
+  sessionEnd: Date;
+}
+
+export const insertOne = async (
+  params: InsertSessionParams
+): Promise<SessionDocument | null> => {
   const { mongoClient } = database();
 
   const currentDate = new Date();
@@ -13,7 +25,7 @@ export const insertOne = async (data: any): Promise<SessionDocument | null> => {
     queuedAt,
     sessionStart,
     sessionEnd,
-  } = data;
+  } = params;
 
   const sessionDuration =
     new Date(sessionEnd).getTime() - new Date(sessionStart).getTime();
@@ -32,7 +44,7 @@ export const insertOne = async (data: any): Promise<SessionDocument | null> => {
       sessionDuration: sessionDuration,
       createdAt: currentDate,
       updatedAt: currentDate,
-    } as SessionDocument);
+    } as unknown as SessionDocument);
 
   return await mongoClient()
     .db()

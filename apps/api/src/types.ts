@@ -48,7 +48,7 @@ export interface SessionDocument {
   userId: string;
   officeId: string;
   chargerId: string;
-  queuedAt: Date;
+  queuedAt: Date | null;
   sessionStart: Date;
   sessionEnd: Date;
   sessionDuration: number;

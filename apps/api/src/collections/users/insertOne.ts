@@ -2,12 +2,21 @@ import { database } from "../../database";
 import { encrypt } from "../../utils/encrypt";
 import { UserDocument } from "../../types";
 
-export const insertOne = async (data: any): Promise<UserDocument | null> => {
+export interface InsertUserParams {
+  email: string;
+  password: string;
+  fullName: string;
+  role: string;
+}
+
+export const insertOne = async (
+  params: InsertUserParams
+): Promise<UserDocument | null> => {
   const { mongoClient } = database();
 
   try {
     const currentDate = new Date();
-    const { email, password, fullName, role } = data;
+    const { email, password, fullName, role } = params;
 
     const inserted = await mongoClient()
       .db()

@@ -9,6 +9,10 @@ interface HandlerOptions {
   checkRole?: string;
 }
 
+interface Payload extends jwt.JwtPayload {
+  email: string;
+}
+
 const config = getConfig();
 
 export const authorization =
@@ -22,7 +26,7 @@ export const authorization =
           const t = token.replace("Bearer ", "").replace("Bearer", "");
           const decoded = jwt.verify(t, config.secret);
           if (options?.checkRole) {
-            const email = (decoded as any).email;
+            const email = (decoded as Payload).email;
             if (email) {
               const user = await findOne({ email });
               if (user && user.role === options.checkRole) {

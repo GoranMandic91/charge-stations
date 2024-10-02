@@ -1,11 +1,20 @@
 import { database } from "../../database";
 import { Charger, ChargerRequest, OfficeDocument } from "../../types";
 
-export const insertOne = async (data: any): Promise<OfficeDocument | null> => {
+export interface InsertOfficeParams {
+  name: string;
+  location: string;
+  numOfChargers: number;
+  highDemandDuration: number;
+}
+
+export const insertOne = async (
+  params: InsertOfficeParams
+): Promise<OfficeDocument | null> => {
   const { mongoClient } = database();
 
   const currentDate = new Date();
-  const { name, location, numOfChargers, highDemandDuration } = data;
+  const { name, location, numOfChargers, highDemandDuration } = params;
 
   const chargers: Charger[] = new Array(numOfChargers)
     .fill(0)
